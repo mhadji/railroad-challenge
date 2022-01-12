@@ -1,0 +1,25 @@
+<mat-sidenav-container>
+  <mat-sidenav #sidenav mode="over">
+    <label>Project Dashboard</label>
+    <hr />
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <mat-toolbar color="primary">
+      <header>
+        <mat-icon (click)="sidenav.toggle()">menu</mat-icon>
+        <label>Project Dashboard</label>
+        <!-- <nav>
+          <a routerLink="home" routerLinkActive="active">Home</a>
+          <a routerLink="about" routerLinkActive="active">About</a>
+          <a routerLink="login" routerLinkActive="active">Login</a>
+          <a routerLink="sign-up" routerLinkActive="active">Sign Up</a>
+          <a routerLink="contact" routerLinkActive="active">Contact</a>
+        </nav>-->
+      </header>
+    </mat-toolbar>
+    <section>
+      <router-outlet></router-outlet>
+    </section>
+  </mat-sidenav-content>
+</mat-sidenav-container>
