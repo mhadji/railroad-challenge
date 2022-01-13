@@ -1,11 +1,13 @@
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { mockData } from '../model';
 import { DataService } from '../services/data.service';
+import { ModalComponent } from './modal/modal.component';
 
 @Component({
   selector: 'app-home',
@@ -23,8 +25,7 @@ export class HomeComponent implements AfterViewInit, OnInit {
     'project_owner',
     'status',
     'budget',
-    'created',
-    'modified',
+    'actions',
   ];
   message: string;
   // Object to create Filter
@@ -50,10 +51,13 @@ export class HomeComponent implements AfterViewInit, OnInit {
   };
   budgetFilterValue: any;
   showEdit = false;
-
+  highlightedRows = [];
+  highlightedRowss = {};
+  isDisabled = false;
   constructor(
     private _liveAnnouncer: LiveAnnouncer,
-    private dataService: DataService
+    private dataService: DataService,
+    private dialog: MatDialog
   ) {
     // subscribe to  get data and message from service
     this.dataService.currentData.subscribe((data: mockData[]) => {
@@ -102,6 +106,20 @@ export class HomeComponent implements AfterViewInit, OnInit {
   edit() {
     this.showEdit = true;
   }
+  // opens the modal
+  onChange(row: mockData) {
+    console.log('row:', row);
+    const dialogConfig = new MatDialogConfig();
+    // dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = '60%';
+    this.dialog.open(ModalComponent, dialogConfig);
+  }
+  // highlight(row :any) {
+  //   this.highlightedRows.push(row );
+  //   this.highlightedRowss[row.title] = !this.highlightedRowss[row.tilte];
+  // }
+
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
