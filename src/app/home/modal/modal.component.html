@@ -1,1 +1,42 @@
-<p>modal works!</p>
+<div mat-dialog-content>
+  <div class="full-width" *ngIf="data.action === 'display'">
+    <table>
+      <tr>
+        <td>Title</td>
+        <td>{{ data.rowData.title }}</td>
+      </tr>
+      <tr>
+        <td>Division</td>
+        <td>{{ data.rowData.division }}</td>
+      </tr>
+      <tr>
+        <td>Project Owner</td>
+        <td>{{ data.rowData.project_owner }}</td>
+      </tr>
+      <tr>
+        <td>Budget</td>
+        <td>{{ data.rowData.budget | currency }}</td>
+      </tr>
+      <tr>
+        <td>Status</td>
+        <td>{{ data.rowData.status }}</td>
+      </tr>
+      <tr>
+        <td>Date Created</td>
+        <td>{{ data.rowData.created | date: "shortDate" }}</td>
+      </tr>
+      <tr>
+        <td>Date modified</td>
+        <td>{{ data.rowData.modified | date: "shortDate" }}</td>
+      </tr>
+    </table>
+  </div>
+
+  <mat-dialog-actions>
+    <!-- <button mat-raised-button color="primary" (click)="submit()">Submit</button> -->
+
+    <button type="button" mat-raised-button color="warn" mat-dialog-close>
+      Close
+    </button>
+  </mat-dialog-actions>
+</div>

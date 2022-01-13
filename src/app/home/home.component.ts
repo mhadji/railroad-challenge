@@ -107,13 +107,19 @@ export class HomeComponent implements AfterViewInit, OnInit {
     this.showEdit = true;
   }
   // opens the modal
-  onChange(row: mockData) {
-    console.log('row:', row);
-    const dialogConfig = new MatDialogConfig();
-    // dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
-    dialogConfig.width = '60%';
-    this.dialog.open(ModalComponent, dialogConfig);
+  openDialog(row: mockData, action: string) {
+    const confirmDialogRef = this.dialog.open(ModalComponent, {
+      data: { rowData: row, action: action },
+      autoFocus: true,
+      width: '500px',
+    });
+
+    confirmDialogRef.afterClosed().subscribe((result) => {
+      // send to Api
+      if (result) {
+        console.log('result:', result);
+      }
+    });
   }
   // highlight(row :any) {
   //   this.highlightedRows.push(row );
@@ -124,10 +130,10 @@ export class HomeComponent implements AfterViewInit, OnInit {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
-  changed(event: any) {
-    console.log('event:', event);
-    alert(`Status has changed to ${event.value}`);
-  }
+  // changed(event: any) {
+  //   console.log('event:', event);
+  //   alert(`Status has changed to ${event.value}`);
+  // }
   announceSortChange(sortState: Sort) {
     if (sortState.direction) {
       this._liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
