@@ -30,14 +30,81 @@
         <td>{{ data.rowData.modified | date: "shortDate" }}</td>
       </tr>
     </table>
+    <mat-dialog-actions>
+      <button type="button" mat-raised-button color="warn" mat-dialog-close>
+        Close
+      </button>
+    </mat-dialog-actions>
   </div>
 
-  <div *ngIf="data.action === 'modify'">MOD</div>
-  <mat-dialog-actions>
-    <!-- <button mat-raised-button color="primary" (click)="submit()">Submit</button> -->
+  <div *ngIf="data.action === 'modify'">
+    <form
+      [formGroup]="recordForm"
+      novalidate
+      (ngSubmit)="onSubmit()"
+      class="form-group"
+    >
+      <div>
+        <mat-form-field>
+          <mat-select
+            placeholder="Project Owners"
+            formControlName="project_owner"
+          >
+            <mat-option *ngFor="let po of data.poOptions" [value]="po">
+              {{ po }}
+            </mat-option>
+          </mat-select>
+          <mat-error> project_owner is <strong>required</strong> </mat-error>
+        </mat-form-field>
+      </div>
 
-    <button type="button" mat-raised-button color="warn" mat-dialog-close>
-      Close
-    </button>
-  </mat-dialog-actions>
+      <div>
+        <mat-form-field>
+          <input
+            matInput
+            placeholder="budget"
+            formControlName="budget"
+            required
+            type="number"
+          />
+          <mat-error> Budget is <strong>required</strong> </mat-error>
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field>
+          <mat-select placeholder="Status" formControlName="status">
+            <mat-option *ngFor="let stat of data.statusOptions" [value]="stat">
+              {{ stat }}
+            </mat-option>
+          </mat-select>
+          <mat-error>status is <strong>required</strong> </mat-error>
+        </mat-form-field>
+      </div>
+
+      <mat-divider></mat-divider>
+
+      <mat-dialog-actions>
+        <button
+          mat-raised-button
+          color="primary"
+          type="submit"
+          [disabled]="!recordForm.valid"
+          *ngIf="recordForm.enabled"
+        >
+          Submit
+        </button>
+
+        <button
+          type="button"
+          mat-raised-button
+          color="warn"
+          mat-dialog-close
+          title="Cancel"
+          aria-label="Cancel"
+        >
+          Cancel
+        </button>
+      </mat-dialog-actions>
+    </form>
+  </div>
 </div>

@@ -109,7 +109,12 @@ export class HomeComponent implements AfterViewInit, OnInit {
   // opens the modal
   openDialog(row: mockData, action: string) {
     const confirmDialogRef = this.dialog.open(ModalComponent, {
-      data: { rowData: row, action: action },
+      data: {
+        rowData: row,
+        action: action,
+        poOptions: this.poOptions,
+        statusOptions: this.statusOptions,
+      },
       autoFocus: true,
       width: '500px',
     });
