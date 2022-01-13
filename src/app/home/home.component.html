@@ -3,7 +3,11 @@
   <mat-expansion-panel hideToggle>
     <mat-expansion-panel-header>
       <mat-panel-title> Filter Panels </mat-panel-title>
-      <mat-panel-description> </mat-panel-description>
+      <mat-panel-description>
+        {{ filteredValues["title"] }} - {{ filteredValues["division"] }} -
+        {{ filteredValues["project_owner"] }} - {{ filteredValues["status"] }} -
+        {{ filteredValues["budget"] }}</mat-panel-description
+      >
     </mat-expansion-panel-header>
     <div>
       <mat-form-field>
@@ -70,7 +74,25 @@
       <mat-panel-title> Summary </mat-panel-title>
       <mat-panel-description> </mat-panel-description>
     </mat-expansion-panel-header>
-    <p>Summary of data</p>
+
+    <table>
+      <tr>
+        <td># Of Records</td>
+        <td>{{ summary.numberOfRecords }}</td>
+      </tr>
+      <tr>
+        <td>total Budget</td>
+        <td>{{ summary.totalBudget | currency }}</td>
+      </tr>
+      <tr>
+        <td>min Budget</td>
+        <td>{{ summary.minBudget | currency }}</td>
+      </tr>
+      <tr>
+        <td>max Budget</td>
+        <td>{{ summary.maxBudget | currency }}</td>
+      </tr>
+    </table>
   </mat-expansion-panel>
 </mat-accordion>
 <hr />

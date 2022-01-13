@@ -4,7 +4,8 @@ import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
+import { MatTable, MatTableDataSource } from '@angular/material/table';
+
 import { mockData } from '../model';
 import { DataService } from '../services/data.service';
 import { ModalComponent } from './modal/modal.component';
@@ -17,6 +18,7 @@ import { ModalComponent } from './modal/modal.component';
 export class HomeComponent implements AfterViewInit, OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatTable) table: MatTable<mockData>;
   panelOpenState = false;
   dataSource: any = [];
   displayedColumns: string[] = [
@@ -54,6 +56,7 @@ export class HomeComponent implements AfterViewInit, OnInit {
   highlightedRows = [];
   highlightedRowss = {};
   isDisabled = false;
+  summary: any;
   constructor(
     private _liveAnnouncer: LiveAnnouncer,
     private dataService: DataService,
@@ -62,7 +65,7 @@ export class HomeComponent implements AfterViewInit, OnInit {
     // subscribe to  get data and message from service
     this.dataService.currentData.subscribe((data: mockData[]) => {
       this.data = data;
-      // creating data for filter
+      // creating datalist for filter
       const d = data.map((item) => item.division);
       this.divisionOptions = [...new Set(d)];
 
@@ -71,6 +74,7 @@ export class HomeComponent implements AfterViewInit, OnInit {
 
       const o = data.map((item) => item.project_owner);
       this.poOptions = [...new Set(o)];
+      this.summarizedDataFactory(data);
 
       // matDataTable data init
       this.dataSource = new MatTableDataSource(data);
@@ -109,12 +113,48 @@ export class HomeComponent implements AfterViewInit, OnInit {
     });
     this.dataSource.filterPredicate = this.customFilterPredicate();
   }
+  private summarizedDataFactory(data: mockData[]) {
+    let numberOfRecords = data.length;
+    let totalBudget = data.reduce(
+      (previousValue, currentValue) => previousValue + currentValue.budget,
+      0
+    );
+    let minBudget = Math.min.apply(
+      Math,
+      data.map(function (item) {
+        return item.budget;
+      })
+    );
+    let maxBudget = Math.max.apply(
+      Math,
+      data.map(function (item) {
+        return item.budget;
+      })
+    );
+
+    let sum: any = {
+      numberOfRecords: numberOfRecords,
+      totalBudget: totalBudget,
+      minBudget: minBudget,
+      maxBudget: maxBudget,
+    };
+
+    this.summary = sum;
+  }
+  private clearFilters() {
+    this.divisionFilter.setValue('');
+    this.titleFilter.setValue('');
+    this.statusFilter.setValue('');
+    this.budgetFilter.setValue(0);
+    this.poFilter.setValue('');
+  }
   addData() {
     alert('Data Added.');
   }
 
   removeData(rowData: mockData) {
     this.dataService.delete(rowData);
+    this.clearFilters();
   }
   // opens the modal
   openDialog(row: mockData, action: string) {
@@ -135,6 +175,7 @@ export class HomeComponent implements AfterViewInit, OnInit {
         // grab old data row by id , delete and push new modified one
 
         this.dataService.edit(result);
+        this.clearFilters();
       }
     });
   }
