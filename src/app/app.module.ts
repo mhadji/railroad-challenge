@@ -7,6 +7,7 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { MaterialModule } from './material.module';
 import { NavComponent } from './nav/nav.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [AppComponent, NavComponent, HomeComponent],
@@ -14,7 +15,8 @@ import { NavComponent } from './nav/nav.component';
     BrowserModule,
     BrowserAnimationsModule,
     LayoutModule,
-
+    FormsModule,
+    ReactiveFormsModule,
     AppRoutingModule,
     MaterialModule,
   ],
