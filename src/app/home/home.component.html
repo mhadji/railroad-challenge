@@ -73,7 +73,12 @@
     <p>Summary of data</p>
   </mat-expansion-panel>
 </mat-accordion>
-
+<hr />
+<div class="demo-button-container">
+  <button mat-raised-button (click)="addData()" class="demo-button">
+    Add data
+  </button>
+</div>
 <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort>
   <!-- Title Column -->
   <ng-container matColumnDef="title">
@@ -147,6 +152,9 @@
       </button>
       <button mat-icon-button (click)="openDialog(row, 'modify')">
         <mat-icon>edit</mat-icon>
+      </button>
+      <button mat-icon-button (click)="removeData(row)">
+        <mat-icon>delete</mat-icon>
       </button>
     </mat-cell>
   </ng-container>

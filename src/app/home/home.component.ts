@@ -109,7 +109,13 @@ export class HomeComponent implements AfterViewInit, OnInit {
     });
     this.dataSource.filterPredicate = this.customFilterPredicate();
   }
+  addData() {
+    alert('Data Added.');
+  }
 
+  removeData(rowData: mockData) {
+    this.dataService.delete(rowData);
+  }
   // opens the modal
   openDialog(row: mockData, action: string) {
     const confirmDialogRef = this.dialog.open(ModalComponent, {

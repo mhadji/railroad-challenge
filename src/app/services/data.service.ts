@@ -325,7 +325,17 @@ export class DataService {
       }
     });
   }
+  delete(newData: mockData) {
+    DATA.forEach((element, index, arr) => {
+      if (element.id === newData.id) {
+        DATA.splice(index, 1);
 
+        this.changeData(DATA);
+
+        this.changeMessage('Record had deleted.');
+      }
+    });
+  }
   changeData(data: mockData[]) {
     this.dataSource.next(data);
   }
