@@ -17,7 +17,7 @@ import { ModalComponent } from './modal/modal.component';
 export class HomeComponent implements AfterViewInit, OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
-
+  panelOpenState = false;
   dataSource: any = [];
   displayedColumns: string[] = [
     'title',
