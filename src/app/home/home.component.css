@@ -14,3 +14,6 @@ table {
 .mat-column-name {
   max-width: 100px;
 }
+mat-slider {
+  width: 300px;
+}

@@ -38,6 +38,7 @@ export class HomeComponent implements AfterViewInit, OnInit {
   divisionFilter = new FormControl();
   statusFilter = new FormControl();
   poFilter = new FormControl();
+  budgetFilter = new FormControl();
   globalFilter = '';
 
   filteredValues = {
@@ -47,6 +48,8 @@ export class HomeComponent implements AfterViewInit, OnInit {
     budget: '',
     status: '',
   };
+  budgetFilterValue: any;
+  showEdit = false;
 
   constructor(
     private _liveAnnouncer: LiveAnnouncer,
@@ -85,17 +88,28 @@ export class HomeComponent implements AfterViewInit, OnInit {
       this.filteredValues['status'] = statusFilterValue;
       this.dataSource.filter = JSON.stringify(this.filteredValues);
     });
+    this.budgetFilter.valueChanges.subscribe((budgetFilterValue) => {
+      this.budgetFilterValue = budgetFilterValue;
+      this.filteredValues['budget'] = budgetFilterValue;
+      this.dataSource.filter = JSON.stringify(this.filteredValues);
+    });
     this.poFilter.valueChanges.subscribe((poFilterValue) => {
       this.filteredValues['project_owner'] = poFilterValue;
       this.dataSource.filter = JSON.stringify(this.filteredValues);
     });
     this.dataSource.filterPredicate = this.customFilterPredicate();
   }
+  edit() {
+    this.showEdit = true;
+  }
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
-
+  changed(event: any) {
+    console.log('event:', event);
+    alert(`Status has changed to ${event.value}`);
+  }
   announceSortChange(sortState: Sort) {
     if (sortState.direction) {
       this._liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
@@ -103,7 +117,13 @@ export class HomeComponent implements AfterViewInit, OnInit {
       this._liveAnnouncer.announce('Sorting cleared');
     }
   }
+  formatLabel(value: number) {
+    if (value >= 1000) {
+      return Math.round(value / 1000) + 'k';
+    }
 
+    return value;
+  }
   customFilterPredicate() {
     const filterPredicate = (data: mockData, filter: string): boolean => {
       // let globalMatch = !this.globalFilter;
@@ -138,7 +158,13 @@ export class HomeComponent implements AfterViewInit, OnInit {
           .toString()
           .trim()
           .toLowerCase()
-          .indexOf(searchString.status.toLowerCase()) !== -1
+          .indexOf(searchString.status.toLowerCase()) !== -1 &&
+        data.project_owner
+          .toString()
+          .trim()
+          .toLowerCase()
+          .indexOf(searchString.project_owner.toLowerCase()) !== -1 &&
+        data.budget > searchString.budget
       );
     };
     return filterPredicate;
