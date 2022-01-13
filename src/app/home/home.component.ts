@@ -1,7 +1,7 @@
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -74,12 +74,18 @@ export class HomeComponent implements AfterViewInit, OnInit {
 
       // matDataTable data init
       this.dataSource = new MatTableDataSource(data);
+      this.filterSetup();
     });
     this.dataService.currentMessage.subscribe((message) => {
-      this.message = message;
+      if (message) {
+        alert(message);
+      }
     });
   }
   ngOnInit() {
+    this.filterSetup();
+  }
+  private filterSetup() {
     this.titleFilter.valueChanges.subscribe((titleFilterValue) => {
       this.filteredValues['title'] = titleFilterValue;
       this.dataSource.filter = JSON.stringify(this.filteredValues);
@@ -103,9 +109,7 @@ export class HomeComponent implements AfterViewInit, OnInit {
     });
     this.dataSource.filterPredicate = this.customFilterPredicate();
   }
-  edit() {
-    this.showEdit = true;
-  }
+
   // opens the modal
   openDialog(row: mockData, action: string) {
     const confirmDialogRef = this.dialog.open(ModalComponent, {
@@ -122,7 +126,9 @@ export class HomeComponent implements AfterViewInit, OnInit {
     confirmDialogRef.afterClosed().subscribe((result) => {
       // send to Api
       if (result) {
-        console.log('result:', result);
+        // grab old data row by id , delete and push new modified one
+
+        this.dataService.edit(result);
       }
     });
   }

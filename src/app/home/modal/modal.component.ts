@@ -27,6 +27,7 @@ export class ModalComponent implements OnInit {
     this.recordForm.patchValue(this.data.rowData);
   }
   onSubmit() {
-    this.dialogRef.close(this.recordForm.value);
+    const payload = { ...this.data.rowData, ...this.recordForm.value };
+    this.dialogRef.close(payload);
   }
 }
