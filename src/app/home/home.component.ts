@@ -131,12 +131,18 @@ export class HomeComponent implements AfterViewInit, OnInit {
         return item.budget;
       })
     );
+    const s = data.map((item) => item.status);
+    const countsStatus: any = {};
+    s.forEach((x) => {
+      countsStatus[x] = (countsStatus[x] || 0) + 1;
+    });
 
     let sum: any = {
       numberOfRecords: numberOfRecords,
       totalBudget: totalBudget,
       minBudget: minBudget,
       maxBudget: maxBudget,
+      countsStatus: countsStatus,
     };
 
     this.summary = sum;
